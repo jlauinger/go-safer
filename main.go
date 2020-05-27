@@ -1,10 +1,10 @@
 package main
 
 import (
+	"go-safer/passes/sliceheader"
 	"golang.org/x/tools/go/analysis/singlechecker"
-	"go-safer/passes/literalheader"
 )
 
 func main() {
-	singlechecker.Main(literalheader.Analyzer)
+	singlechecker.Main(sliceheader.Analyzer)
 }

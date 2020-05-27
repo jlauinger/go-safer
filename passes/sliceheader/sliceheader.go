@@ -1,4 +1,4 @@
-package literalheader
+package sliceheader
 
 import (
 	"fmt"
@@ -15,8 +15,8 @@ import (
 )
 
 var Analyzer = &analysis.Analyzer{
-	Name: "literalheader",
-	Doc:  "reports reflect.SliceHeader and reflect.StringHeader composite literals",
+	Name: "sliceheader",
+	Doc:  "reports reflect.SliceHeader and reflect.StringHeader misuses",
 	Run:  run,
 	Requires: []*analysis.Analyzer{inspect.Analyzer, ctrlflow.Analyzer},
 	RunDespiteErrors: true,

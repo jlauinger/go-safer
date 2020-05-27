@@ -1,9 +1,9 @@
-package literalheader_test
+package sliceheader_test
 
 import (
-	"testing"
-  "go-safer/passes/literalheader"
+	"go-safer/passes/sliceheader"
 	"golang.org/x/tools/go/analysis/analysistest"
+	"testing"
 )
 
 func Test(t *testing.T) {
@@ -20,6 +20,6 @@ func Test(t *testing.T) {
 		"good/safe_cast",
 		"good/unrelated_selector",
 	}
-	analysistest.Run(t, testdata, literalheader.Analyzer, testPackages...)
+	analysistest.Run(t, testdata, sliceheader.Analyzer, testPackages...)
 }
 
