@@ -18,6 +18,7 @@ func Test(t *testing.T) {
 		"bad/nil_cast",
 
 		"good/safe_cast",
+		"good/safe_cast_dereferenced_header",
 		"good/unrelated_selector",
 	}
 	analysistest.Run(t, testdata, sliceheader.Analyzer, testPackages...)

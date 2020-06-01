@@ -1,4 +1,4 @@
-package good
+package safe_cast_dereferenced_header
 
 import (
 	"reflect"
@@ -7,11 +7,12 @@ import (
 )
 
 func SafeCastString(str string) (b []byte) {
-	strH := (*reflect.StringHeader)(unsafe.Pointer(&str))
-	sH := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	strH := *(*reflect.StringHeader)(unsafe.Pointer(&str))
+	sH := *(*reflect.SliceHeader)(unsafe.Pointer(&b))
 	sH.Len = strH.Len // ok
 	sH.Cap = strH.Len // ok
 	sH.Data = strH.Data // ok
 	runtime.KeepAlive(str)
 	return
 }
+

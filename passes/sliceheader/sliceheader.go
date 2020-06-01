@@ -211,11 +211,19 @@ func nodeAssignsObject(n ast.Node, object types.Object, pass *analysis.Pass) (bo
 }
 
 func definitionExprIsCastFromRealSlice(expr ast.Expr, pass *analysis.Pass) bool {
-	pass.Fset.File(expr.Pos()).Line(expr.Pos())
+	var ok bool
 
-	callExpr, ok := expr.(*ast.CallExpr)
+	var callExpr *ast.CallExpr
+	callExpr, ok = expr.(*ast.CallExpr)
 	if !ok {
-		return false
+		starExpr, ok := expr.(*ast.StarExpr)
+		if !ok {
+			return false
+		}
+		callExpr, ok = starExpr.X.(*ast.CallExpr)
+		if !ok {
+			return false
+		}
 	}
 
 	castTarget, ok := callExpr.Fun.(*ast.ParenExpr)
