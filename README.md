@@ -55,7 +55,7 @@ collector runs just before the final cast from the literal header instance to a 
 the original slice or `string`. This can lead to an information leak vulnerability.
 
 For more details, such as a Proof-of-Concept exploit and a suggestion for a fixed version of these unsafe patterns, read 
-this blog post: [Golang Slice Header GC-Based Data Confusion on Real-World Code](https://dev.to/jlauinger)
+this blog post: [Golang Slice Header GC-Based Data Confusion on Real-World Code](https://dev.to/jlauinger/sliceheader-literals-in-go-create-a-gc-race-and-flawed-escape-analysis-exploitation-with-unsafe-pointer-on-real-world-code-4mh7)
 
 
 ## Install
