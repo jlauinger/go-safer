@@ -13,10 +13,9 @@ import (
 )
 
 /*
- Package sliceheader implements a Go Vet-style linter pass to find misuses of reflect.SliceHeader and
- reflect.StringHeader.
+ Analyzer is a golang.org/x/tools/go/analysis style linter pass.
 
- Use this Analyzer with the golang.org/x/tools/go/analysis infrastructure.
+ Use this Analyzer with the Vet-style infrastructure.
  */
 var Analyzer = &analysis.Analyzer{
 	Name:             "sliceheader",
@@ -229,6 +228,9 @@ func definitionExprIsCastFromRealSlice(expr ast.Expr, pass *analysis.Pass) bool 
 	}
 
 	castPointerTarget, ok := definitionCastPointerTargetIsReflectHeader(callExpr)
+	if !ok {
+		return false
+	}
 
 	selectorReceiver, ok := castPointerTarget.X.(*ast.Ident)
 	if !ok {
