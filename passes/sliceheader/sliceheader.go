@@ -1,8 +1,6 @@
 package sliceheader
 
 import (
-	"fmt"
-
 	"go/ast"
 	"go/token"
 	"go/types"
@@ -23,8 +21,6 @@ var Analyzer = &analysis.Analyzer{
 }
 
 func run(pass *analysis.Pass) (interface{}, error) {
-	fmt.Printf("") // to "need" fmt Package
-
 	inspectResult := pass.ResultOf[inspect.Analyzer].(*inspector.Inspector)
 	cfgResult := pass.ResultOf[ctrlflow.Analyzer].(*ctrlflow.CFGs)
 
