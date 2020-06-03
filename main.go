@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-safer/passes/sliceheader"
+	"github.com/jlauinger/go-safer/passes/sliceheader"
 	"golang.org/x/tools/go/analysis/singlechecker"
 )
 

@@ -2,7 +2,6 @@ package sliceheader
 
 import (
 	"fmt"
-	"golang.org/x/tools/go/cfg"
 
 	"go/ast"
 	"go/token"
@@ -12,6 +11,7 @@ import (
 	"golang.org/x/tools/go/analysis/passes/ctrlflow"
 	"golang.org/x/tools/go/analysis/passes/inspect"
 	"golang.org/x/tools/go/ast/inspector"
+	"golang.org/x/tools/go/cfg"
 )
 
 var Analyzer = &analysis.Analyzer{

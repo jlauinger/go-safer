@@ -1,7 +1,7 @@
 package sliceheader_test
 
 import (
-	"go-safer/passes/sliceheader"
+	"github.com/jlauinger/go-safer/passes/sliceheader"
 	"golang.org/x/tools/go/analysis/analysistest"
 	"testing"
 )

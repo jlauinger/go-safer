@@ -1,4 +1,4 @@
-module go-safer
+module github.com/jlauinger/go-safer
 
 go 1.14
 
