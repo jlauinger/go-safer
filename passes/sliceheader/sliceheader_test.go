@@ -23,4 +23,3 @@ func Test(t *testing.T) {
 	}
 	analysistest.Run(t, testdata, sliceheader.Analyzer, testPackages...)
 }
-

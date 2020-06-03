@@ -12,11 +12,17 @@ import (
 	"golang.org/x/tools/go/cfg"
 )
 
+/*
+ Package sliceheader implements a Go Vet-style linter pass to find misuses of reflect.SliceHeader and
+ reflect.StringHeader.
+
+ Use this Analyzer with the golang.org/x/tools/go/analysis infrastructure.
+ */
 var Analyzer = &analysis.Analyzer{
-	Name: "sliceheader",
-	Doc:  "reports reflect.SliceHeader and reflect.StringHeader misuses",
-	Run:  run,
-	Requires: []*analysis.Analyzer{inspect.Analyzer, ctrlflow.Analyzer},
+	Name:             "sliceheader",
+	Doc:              "reports reflect.SliceHeader and reflect.StringHeader misuses",
+	Run:              run,
+	Requires:         []*analysis.Analyzer{inspect.Analyzer, ctrlflow.Analyzer},
 	RunDespiteErrors: true,
 }
 
@@ -118,7 +124,6 @@ func assigningToReflectHeader(assignStmt *ast.AssignStmt, pass *analysis.Pass, s
 			return true
 		}
 
-
 		if typeIsReflectHeader(lhsObject.Type()) {
 			cfgStack := findPathInCFG(cfgs.FuncDecl(function), assignStmt)
 			if derivedByCast(lhsObject, cfgStack, pass) {
@@ -143,14 +148,15 @@ func findPathInCFGIter(block *cfg.Block, stmt *ast.Node, depth int) (bool, []ast
 	contained, nodes := nodesUntilStmt(&block.Nodes, stmt)
 	if contained {
 		return true, nodes
-	} else {
-		for _, child := range block.Succs {
-			found, childStack := findPathInCFGIter(child, stmt, depth + 1)
-			if found {
-				return true, append(block.Nodes, childStack...)
-			}
+	}
+
+	for _, child := range block.Succs {
+		found, childStack := findPathInCFGIter(child, stmt, depth+1)
+		if found {
+			return true, append(block.Nodes, childStack...)
 		}
 	}
+
 	return false, []ast.Node{}
 }
 
@@ -222,24 +228,7 @@ func definitionExprIsCastFromRealSlice(expr ast.Expr, pass *analysis.Pass) bool 
 		}
 	}
 
-	castTarget, ok := callExpr.Fun.(*ast.ParenExpr)
-	if !ok {
-		return false
-	}
-
-	castStarTarget, ok := castTarget.X.(*ast.StarExpr)
-	if !ok {
-		return false
-	}
-
-	castPointerTarget, ok := castStarTarget.X.(*ast.SelectorExpr)
-	if !ok {
-		return false
-	}
-
-	if castPointerTarget.Sel.Name != "SliceHeader" && castPointerTarget.Sel.Name != "StringHeader" {
-		return false
-	}
+	castPointerTarget, ok := definitionCastPointerTargetIsReflectHeader(callExpr)
 
 	selectorReceiver, ok := castPointerTarget.X.(*ast.Ident)
 	if !ok {
@@ -275,4 +264,29 @@ func definitionExprIsCastFromRealSlice(expr ast.Expr, pass *analysis.Pass) bool 
 	}
 
 	return typeIsSliceOrStringReferenceType(sourceType.Type)
+}
+
+func definitionCastPointerTargetIsReflectHeader(callExpr *ast.CallExpr) (*ast.SelectorExpr, bool) {
+	var ok bool
+
+	castTarget, ok := callExpr.Fun.(*ast.ParenExpr)
+	if !ok {
+		return nil, false
+	}
+
+	castStarTarget, ok := castTarget.X.(*ast.StarExpr)
+	if !ok {
+		return nil, false
+	}
+
+	castPointerTarget, ok := castStarTarget.X.(*ast.SelectorExpr)
+	if !ok {
+		return nil, false
+	}
+
+	if castPointerTarget.Sel.Name != "SliceHeader" && castPointerTarget.Sel.Name != "StringHeader" {
+		return nil, false
+	}
+
+	return castPointerTarget, true
 }
