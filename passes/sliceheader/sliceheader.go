@@ -12,11 +12,8 @@ import (
 	"golang.org/x/tools/go/cfg"
 )
 
-/*
- Analyzer is a golang.org/x/tools/go/analysis style linter pass.
-
- Use this Analyzer with the Vet-style infrastructure.
- */
+// Analyzer is a golang.org/x/tools/go/analysis style linter pass.
+// Use this with the Vet-style infrastructure.
 var Analyzer = &analysis.Analyzer{
 	Name:             "sliceheader",
 	Doc:              "reports reflect.SliceHeader and reflect.StringHeader misuses",
