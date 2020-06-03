@@ -63,7 +63,7 @@ this blog post: [Golang Slice Header GC-Based Data Confusion on Real-World Code]
 To install `go-safer`, use the following command:
 
 ```
-go install github.com/jlauinger/go-safer
+go get github.com/jlauinger/go-safer
 ```
 
 This will install `go-safer` to `$GOPATH/bin`, so make sure that it is included in your `$PATH` environment variable.
@@ -123,6 +123,12 @@ Flags:
   -trace string
     	write trace log to this file
   -v	no effect (deprecated)
+```
+
+Supplying the `-help` flag prints the usage information for `go-safer`:
+
+```
+$ go-safer -help
 ```
 
 
