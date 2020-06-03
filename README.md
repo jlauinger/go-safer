@@ -1,5 +1,7 @@
 # go-safer
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/jlauinger/go-safer)](https://goreportcard.com/report/github.com/jlauinger/go-safer)
+
 Go Vet-style linter to find incorrect uses of `reflect.SliceHeader` and `reflect.StringHeader`
 
 
