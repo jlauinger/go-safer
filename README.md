@@ -13,7 +13,7 @@ Go Vet-style linter to find incorrect uses of `reflect.SliceHeader` and `reflect
  1. There is a composite literal of underlying type `reflect.SliceHeader` or `reflect.StringHeader`
  2. There is an assignment to an instance of type `reflect.SliceHeader` or `reflect.StringHeader` that was not created
     by casting an actual slice or `string`
-    
+
 Pattern 1 identifies code that looks like this:
 
 ```go
@@ -133,6 +133,15 @@ Supplying the `-help` flag prints the usage information for `go-safer`:
 ```
 $ go-safer -help
 ```
+
+## Dependency Management
+
+If your project uses Go modules and a `go.mod` file, `go-safer` will fetch all dependencies automatically before it
+analyzes them. It behaves exactly like `go build` would.
+
+If you use a different form of dependency management, e.g. manual `go get`, `go mod vendor` or anything else, you need
+to run your dependency management before running `go-safer` in order to have all dependencies up to date before
+analysis.
 
 
 ## Development
