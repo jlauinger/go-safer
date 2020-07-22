@@ -6,6 +6,11 @@
 Go Vet-style linter to find incorrect uses of `reflect.SliceHeader` and `reflect.StringHeader`, and unsafe casts between structs with architecture-sized fields.
 
 
+## Output example
+
+![go-safer output example](https://user-images.githubusercontent.com/1872086/88237459-928f5000-cc7f-11ea-9b78-33f28d480610.png)
+
+
 ## Incorrect usage patterns that are reported
 
 `go-safer` reports the following usage patterns:
