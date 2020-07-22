@@ -174,11 +174,10 @@ $ cd go-safer
 $ go build
 ```
 
-To run the test cases for the `sliceheader` pass, use the following commands:
+To run the test cases use the following command:
 
 ```
-$ cd passes/sliceheader
-$ go test
+$ go test ./...
 ```
 
 `go-safer` uses the testing infrastructure from `golang.org/x/tools/go/analysis/analysistest`. To add a test case, create
@@ -198,6 +197,8 @@ fmt.Println("hello world")   // ok
 Annotations that indicate a line that should be reported must begin with `want` and then have the desired message twice.
 For some reason, the testing infrastructure will cause `go-safer` to output the annotation twice, therefore it has to be
 expected twice as well to pass the test.
+
+Test cases for the `structcast` pass can be added similarly.
 
 Since `go-safer` is built upon the Go Vet standard infrastructure, you can import the passes into you own Go Vet-based
 linter.
