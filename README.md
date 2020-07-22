@@ -3,16 +3,17 @@
 [![build](https://github.com/jlauinger/go-safer/workflows/build/badge.svg)](https://github.com/jlauinger/go-safer/actions/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/jlauinger/go-safer)](https://goreportcard.com/report/github.com/jlauinger/go-safer)
 
-Go Vet-style linter to find incorrect uses of `reflect.SliceHeader` and `reflect.StringHeader`
+Go Vet-style linter to find incorrect uses of `reflect.SliceHeader` and `reflect.StringHeader`, and unsafe casts between structs with architecture-sized fields.
 
 
 ## Incorrect usage patterns that are reported
 
-`go-safer` reports the following two usage patterns:
+`go-safer` reports the following usage patterns:
 
- 1. There is a composite literal of underlying type `reflect.SliceHeader` or `reflect.StringHeader`
+ 1. There is a composite literal of underlying type `reflect.SliceHeader` or `reflect.StringHeader`,
  2. There is an assignment to an instance of type `reflect.SliceHeader` or `reflect.StringHeader` that was not created
-    by casting an actual slice or `string`
+    by casting an actual slice or `string`, and
+ 3. There is a cast between struct types, where the structs contain a different number of fields with the architecture-dependently sized types `int`, `uint`, or `uintptr`
 
 Pattern 1 identifies code that looks like this:
 
@@ -24,7 +25,7 @@ func unsafeFunction(s string) []byte {
         Len:  sH.Len,
         Cap:  sH.Len,
     }
-    return *(*[]byte)(unsafe.Pointer(bH)) 
+    return *(*[]byte)(unsafe.Pointer(bH))
 }
 ```
 
@@ -46,8 +47,22 @@ func unsafeFunction(s string) []byte {
 `safer-go` will catch the assignments to an object of type `reflect.SliceHeader`. Using the control flow graph of the
 function, it can see that `sH` was not derived by casting a real slice (here it's `nil` instead).
 
-There are more examples on incorrect (reported) and safe code in the test cases in the `passes/sliceheader/testdata/src`
-directory.
+Pattern 3 identified casts as the following:
+
+```go
+type A struct {
+  x int
+}
+type B struct {
+  y int64
+}
+func unsafeFunction(a A) B {
+  return *(*B)(unsafe.Pointer(&a))
+}
+```
+
+There are more examples on incorrect (reported) and safe code in the test cases in the `passes/*/testdata/src`
+directories.
 
 
 ## Why are these patterns insecure?
@@ -57,7 +72,7 @@ will not treat the `Data` field within these types as a reference to the underly
 collector runs just before the final cast from the literal header instance to a real slice or `string`, it may collect
 the original slice or `string`. This can lead to an information leak vulnerability.
 
-For more details, such as a Proof-of-Concept exploit and a suggestion for a fixed version of these unsafe patterns, read 
+For more details, such as a Proof-of-Concept exploit and a suggestion for a fixed version of these unsafe patterns, read
 this blog post: [Golang Slice Header GC-Based Data Confusion on Real-World Code](https://dev.to/jlauinger/sliceheader-literals-in-go-create-a-gc-race-and-flawed-escape-analysis-exploitation-with-unsafe-pointer-on-real-world-code-4mh7)
 
 
@@ -179,13 +194,16 @@ Annotations that indicate a line that should be reported must begin with `want` 
 For some reason, the testing infrastructure will cause `go-safer` to output the annotation twice, therefore it has to be
 expected twice as well to pass the test.
 
+Since `go-safer` is built upon the Go Vet standard infrastructure, you can import the passes into you own Go Vet-based
+linter.
+
 
 ## License
 
-Licensed under the MIT License (the "License"). You may not use this project except in compliance with the License. You 
+Licensed under the MIT License (the "License"). You may not use this project except in compliance with the License. You
 may obtain a copy of the License [here](https://opensource.org/licenses/MIT).
 
 Copyright 2020 Johannes Lauinger
 
-This tool has been developed as part of my Master's thesis at the 
+This tool has been developed as part of my Master's thesis at the
 [Software Technology Group](https://www.stg.tu-darmstadt.de/stg/homepage.en.jsp) at TU Darmstadt.
