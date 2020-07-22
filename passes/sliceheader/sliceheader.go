@@ -37,7 +37,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	inspectResult.WithStack([]ast.Node{(*ast.AssignStmt)(nil)}, func(n ast.Node, push bool, stack []ast.Node) bool {
 		node := n.(*ast.AssignStmt)
 		if assigningToReflectHeader(node, pass, stack, cfgResult) {
-			pass.Reportf(n.Pos(), "assigning to reflect header object")
+			pass.Reportf(n.Pos(), "assigning to incorectly derived reflect header object")
 		}
 		return true
 	})
