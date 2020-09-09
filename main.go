@@ -7,5 +7,6 @@ import (
 )
 
 func main() {
+	// invoke go vet main function with go-safer analyzers
 	multichecker.Main(sliceheader.Analyzer, structcast.Analyzer)
 }

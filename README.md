@@ -3,7 +3,8 @@
 [![build](https://github.com/jlauinger/go-safer/workflows/build/badge.svg)](https://github.com/jlauinger/go-safer/actions/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/jlauinger/go-safer)](https://goreportcard.com/report/github.com/jlauinger/go-safer)
 
-Go Vet-style linter to find incorrect uses of `reflect.SliceHeader` and `reflect.StringHeader`, and unsafe casts between structs with architecture-sized fields.
+Go linter in the style of `go vet` to find incorrect uses of `reflect.SliceHeader` and `reflect.StringHeader`, and
+unsafe casts between structs with architecture-sized fields.
 
 
 ## Output example

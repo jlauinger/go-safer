@@ -7,6 +7,7 @@ import (
 )
 
 func Test(t *testing.T) {
+	// use go vet infrastructure testing and supply annotated code examples
 	testdata := analysistest.TestData()
 	testPackages := []string{
 		"bad/architecture_sized_variable",
