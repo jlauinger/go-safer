@@ -97,6 +97,9 @@ func detectUnsafeCast(expr ast.Expr) (ast.Expr, ast.Expr, bool) {
 
 	// now, check whether it is unsafe.Pointer indeed
 	sourceCastUnsafePointerSelectorX, ok := sourceCastUnsafePointerSelector.X.(*ast.Ident)
+	if !ok {
+		return nil, nil, false
+	}
 
 	if sourceCastUnsafePointerSelector.Sel.Name != "Pointer" || sourceCastUnsafePointerSelectorX.Name != "unsafe" {
 		return nil, nil, false
